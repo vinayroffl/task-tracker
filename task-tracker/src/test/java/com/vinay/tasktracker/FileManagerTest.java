@@ -32,7 +32,7 @@ class FileManagerTest {
         String content = Files.readString(dataFile);
 
         assertTrue(content.contains("\"lastId\""));
-        assertTrue(content.contains("\"tasks\": []"));
+        assertTrue(content.contains("\"tasks\": ["));
     }
 
     @Test

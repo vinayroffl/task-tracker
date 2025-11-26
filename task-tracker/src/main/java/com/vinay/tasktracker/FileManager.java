@@ -39,73 +39,54 @@ public class FileManager {
     int tasksValueEnd = jsonString.lastIndexOf("]");
     String taskValuesString = jsonString.substring(tasksValueStart, tasksValueEnd);
     int indexOfTaskIdValueStart = taskValuesString.indexOf("\"id\":") + "\"id\":".length() + 2;
-    int indexOfTaskDescriptionValueStart =
-        taskValuesString.indexOf("\"description\":") + "\"description\":".length() + 2;
-    int indexOfTaskStatusValueStart =
-        taskValuesString.indexOf("\"status\":") + "\"status\":".length() + 2;
-    int indexOfTaskCreatedAtValueStart =
-        taskValuesString.indexOf("\"createdAt\":") + "\"createdAt\":".length() + 2;
-    int indexOfTaskUpdatedAtValueStart =
-        taskValuesString.indexOf("\"updatedAt\":") + "\"updatedAt\":".length() + 2;
-    for (long i = 1; i <= lastId && taskValuesString.length() > 4; i++) {
+    int indexOfTaskDescriptionValueStart = taskValuesString.indexOf("\"description\":") + "\"description\":".length()
+        + 2;
+    int indexOfTaskStatusValueStart = taskValuesString.indexOf("\"status\":") + "\"status\":".length() + 2;
+    int indexOfTaskCreatedAtValueStart = taskValuesString.indexOf("\"createdAt\":") + "\"createdAt\":".length() + 2;
+    int indexOfTaskUpdatedAtValueStart = taskValuesString.indexOf("\"updatedAt\":") + "\"updatedAt\":".length() + 2;
+
+    int lastIndexOfIdValue = taskValuesString.lastIndexOf("\"id\":") + "\"id\":".length() + 2;
+
+    while (indexOfTaskIdValueStart > 0) {
 
       int indexOfTaskIdValueEnd = taskValuesString.indexOf(",\n", indexOfTaskIdValueStart) - 1;
-      Long id;
-      try {
-        id =
-            Long.parseLong(
-                taskValuesString.substring(indexOfTaskIdValueStart, indexOfTaskIdValueEnd));
-      } catch (NumberFormatException e) {
-        break;
-      } catch (StringIndexOutOfBoundsException e) {
-        break;
-      }
-      indexOfTaskIdValueStart =
-          taskValuesString.indexOf("\"id\":", indexOfTaskIdValueEnd) + "\"id\":".length() + 2;
+      Long id = Long.parseLong(taskValuesString.substring(indexOfTaskIdValueStart, indexOfTaskIdValueEnd));
+      indexOfTaskIdValueStart = taskValuesString.indexOf("\"id\":", indexOfTaskIdValueEnd) + "\"id\":".length() + 2;
 
-      int indexOfTaskDescriptionValueEnd =
-          taskValuesString.indexOf(",\n", indexOfTaskDescriptionValueStart) - 1;
-      String description =
+      int indexOfTaskDescriptionValueEnd = taskValuesString.indexOf(",\n", indexOfTaskDescriptionValueStart) - 1;
+      String description = taskValuesString.substring(indexOfTaskDescriptionValueStart, indexOfTaskDescriptionValueEnd);
+      indexOfTaskDescriptionValueStart = taskValuesString.indexOf("\"description\":", indexOfTaskDescriptionValueEnd)
+          + "\"description\":".length()
+          + 2;
+
+      int indexOfTaskStatusValueEnd = taskValuesString.indexOf(",\n", indexOfTaskStatusValueStart) - 1;
+      String status = taskValuesString.substring(indexOfTaskStatusValueStart, indexOfTaskStatusValueEnd);
+      indexOfTaskStatusValueStart = taskValuesString.indexOf("\"status\":", indexOfTaskStatusValueEnd)
+          + "\"status\":".length()
+          + 2;
+
+      int indexOfTaskCreatedAtValueEnd = taskValuesString.indexOf(",\n", indexOfTaskCreatedAtValueStart) - 1;
+      LocalDateTime createdAt = LocalDateTime.parse(
           taskValuesString.substring(
-              indexOfTaskDescriptionValueStart, indexOfTaskDescriptionValueEnd);
-      indexOfTaskDescriptionValueStart =
-          taskValuesString.indexOf("\"description\":", indexOfTaskDescriptionValueEnd)
-              + "\"description\":".length()
-              + 2;
+              indexOfTaskCreatedAtValueStart, indexOfTaskCreatedAtValueEnd));
+      indexOfTaskCreatedAtValueStart = taskValuesString.indexOf("\"createdAt\":", indexOfTaskCreatedAtValueEnd)
+          + "\"createdAt\":".length()
+          + 2;
 
-      int indexOfTaskStatusValueEnd =
-          taskValuesString.indexOf(",\n", indexOfTaskStatusValueStart) - 1;
-      String status =
-          taskValuesString.substring(indexOfTaskStatusValueStart, indexOfTaskStatusValueEnd);
-      indexOfTaskStatusValueStart =
-          taskValuesString.indexOf("\"status\":", indexOfTaskStatusValueEnd)
-              + "\"status\":".length()
-              + 2;
-
-      int indexOfTaskCreatedAtValueEnd =
-          taskValuesString.indexOf(",\n", indexOfTaskCreatedAtValueStart) - 1;
-      LocalDateTime createdAt =
-          LocalDateTime.parse(
-              taskValuesString.substring(
-                  indexOfTaskCreatedAtValueStart, indexOfTaskCreatedAtValueEnd));
-      indexOfTaskCreatedAtValueStart =
-          taskValuesString.indexOf("\"createdAt\":", indexOfTaskCreatedAtValueEnd)
-              + "\"createdAt\":".length()
-              + 2;
-
-      int indexOfTaskUpdatedAtValueEnd =
-          taskValuesString.indexOf("\n", indexOfTaskUpdatedAtValueStart) - 2;
-      LocalDateTime updatedAt =
-          LocalDateTime.parse(
-              taskValuesString.substring(
-                  indexOfTaskUpdatedAtValueStart, indexOfTaskUpdatedAtValueEnd));
-      indexOfTaskUpdatedAtValueStart =
-          taskValuesString.indexOf("\"updatedAt\":", indexOfTaskUpdatedAtValueEnd)
-              + "\"updatedAt\":".length()
-              + 2;
+      int indexOfTaskUpdatedAtValueEnd = taskValuesString.indexOf("\n", indexOfTaskUpdatedAtValueStart) - 2;
+      LocalDateTime updatedAt = LocalDateTime.parse(
+          taskValuesString.substring(
+              indexOfTaskUpdatedAtValueStart, indexOfTaskUpdatedAtValueEnd));
+      indexOfTaskUpdatedAtValueStart = taskValuesString.indexOf("\"updatedAt\":", indexOfTaskUpdatedAtValueEnd)
+          + "\"updatedAt\":".length()
+          + 2;
 
       Task task = new Task(id, description, status, createdAt, updatedAt);
-      if (!tasks.contains(task)) tasks.add(task);
+      if (!tasks.contains(task))
+        tasks.add(task);
+      if (lastIndexOfIdValue == indexOfTaskIdValueStart) {
+        break;
+      }
     }
   }
 
@@ -155,8 +136,7 @@ public class FileManager {
     if (taskStringsList.size() > 0) {
       String taskStringsListValues = String.join(", ", taskStringsList);
       int ignoreFirstline = 1;
-      for (Iterator<String> iterator = taskStringsListValues.lines().iterator();
-          iterator.hasNext(); ) {
+      for (Iterator<String> iterator = taskStringsListValues.lines().iterator(); iterator.hasNext();) {
         if (ignoreFirstline == 1) {
           sb.append(iterator.next()).append("\n");
         } else {
