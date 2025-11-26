@@ -84,7 +84,8 @@ public class FileManager {
       Task task = new Task(id, description, status, createdAt, updatedAt);
       if (!tasks.contains(task))
         tasks.add(task);
-      if (lastIndexOfIdValue == indexOfTaskIdValueStart) {
+      // Check if we've processed all tasks by looking ahead
+      if (taskValuesString.indexOf("\"id\":", indexOfTaskIdValueEnd) == -1) {
         break;
       }
     }
