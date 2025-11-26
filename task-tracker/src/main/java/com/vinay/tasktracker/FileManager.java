@@ -45,8 +45,6 @@ public class FileManager {
     int indexOfTaskCreatedAtValueStart = taskValuesString.indexOf("\"createdAt\":") + "\"createdAt\":".length() + 2;
     int indexOfTaskUpdatedAtValueStart = taskValuesString.indexOf("\"updatedAt\":") + "\"updatedAt\":".length() + 2;
 
-    int lastIndexOfIdValue = taskValuesString.lastIndexOf("\"id\":") + "\"id\":".length() + 2;
-
     while (indexOfTaskIdValueStart > 0) {
 
       int indexOfTaskIdValueEnd = taskValuesString.indexOf(",\n", indexOfTaskIdValueStart) - 1;
