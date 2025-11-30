@@ -2,7 +2,7 @@
 
 Hi guys, this is a CLI App to track your tasks and manage your to-do list.
 I'm doing this as a project in the [roadmap.sh](https://roadmap.sh) website.
-Here is the link to the [Project Detail](https://roadmap.sh/projects/task-tracker) page.
+Here is the link to the Project Detail page: https://roadmap.sh/projects/task-tracker
 
 ## Features
 - Add, Update, and Delete tasks
